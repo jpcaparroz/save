@@ -6,6 +6,8 @@ public class Save {
         
         AppPage page = new AppPage();
         page.setVisible(true);
+        
+        
     }
     
 }

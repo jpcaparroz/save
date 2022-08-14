@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Joao\\Desktop\\Java\\jackson-databind-2.13.3.jar"
+    ]
+}
