@@ -1,9 +1,11 @@
 package save;
 
 public class SelectPage extends javax.swing.JFrame {
-
+    Save save = new Save();
+    
     public SelectPage() {
         initComponents();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -59,6 +61,11 @@ public class SelectPage extends javax.swing.JFrame {
         filmesButton.setBorderPainted(false);
         filmesButton.setContentAreaFilled(false);
         filmesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        filmesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filmesButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(filmesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, -1, -1));
 
         gamesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/SelectPage/gameIcon.png"))); // NOI18N
@@ -101,6 +108,11 @@ public class SelectPage extends javax.swing.JFrame {
     private void minimizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeButtonActionPerformed
         setState(SelectPage.ICONIFIED);
     }//GEN-LAST:event_minimizeButtonActionPerformed
+
+    private void filmesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filmesButtonActionPerformed
+        save.getMoviePage();
+        this.setVisible(false);
+    }//GEN-LAST:event_filmesButtonActionPerformed
 
     public static void main(String args[]) {
 

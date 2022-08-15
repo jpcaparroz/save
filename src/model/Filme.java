@@ -11,6 +11,7 @@ public class Filme {
     private String crew;
     private double imDbRating;
     private int imDbRatingCount;
+    private String description;
 
     public String getId() {
         return id;
@@ -83,6 +84,15 @@ public class Filme {
     public void setImDbRatingCount(int imDbRatingCount) {
         this.imDbRatingCount = imDbRatingCount;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     
     
+
 }
