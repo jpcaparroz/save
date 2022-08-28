@@ -1,10 +1,16 @@
 package save;
 
+import javax.swing.JOptionPane;
+
 public class Save {
 
     public static void main(String[] args) {
         Save save = new Save();
-        save.getAppPage();   
+        save.getAppPage();
+    }
+
+    public void mensagemPopUp(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem);
     }
 
     public void getSelectPage() {

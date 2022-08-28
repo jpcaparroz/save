@@ -1,31 +1,72 @@
 package save;
 
-import connectors.Http;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import model.Filme;
 import parsers.SearchParser;
 
 public class MoviePage extends javax.swing.JFrame {
     
     Save save = new Save();
-    int lista = 0;
+    int count = 0;
+    List<Filme> listaFilmes;
+    
     
     public MoviePage() {
         initComponents();
         searchBox.hide();
         searchMovie.hide();
+        filmBox.hide();
     }
     
     public void buscarFilme(){
         SearchParser parser = new SearchParser();
 
         try {
-            jLabel1.setText(parser.parsear(searchMovie.getText()).get(lista).getTitle());
+            
+            listaFilmes = parser.parsear(searchMovie.getText());            
+        
+        } catch (Exception ex) {
+            save.mensagemPopUp("Erro ao procurar filme");
+        }
+    }
+    
+    public void setFilme(){
+        try {
+            String nomeFilme = listaFilmes.get(count).getTitle();
+            String anoFilme = listaFilmes.get(count).getDescription();
+            String posterFilme = listaFilmes.get(count).getImage();
+            
+            filmName.setText(nomeFilme);
+            filmYear.setText(anoFilme.substring(0, 6));
+            filmPoster.setIcon(poster(posterFilme));
+            
+            filmBox.show();
         } catch (Exception ex) {
             Logger.getLogger(MoviePage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    //redimensionando poster
+    public Icon poster(String imagem) throws Exception{
+        InputStream inputStream = new URL(imagem).openStream();
+        Image posterImage = ImageIO.read(inputStream);
+        
+        Image nova = posterImage.getScaledInstance(220, 340, Image.SCALE_SMOOTH);
+        
+        ImageIcon icon = new ImageIcon(nova);
+        return icon;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -39,8 +80,11 @@ public class MoviePage extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         searchMovie = new javax.swing.JTextField();
         searchBox = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        filmPoster = new javax.swing.JLabel();
+        filmYear = new javax.swing.JLabel();
+        filmName = new javax.swing.JLabel();
+        filmBox = new javax.swing.JLabel();
+        nextFilm = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -125,27 +169,43 @@ public class MoviePage extends javax.swing.JFrame {
         searchMovie.setForeground(new java.awt.Color(0, 0, 0));
         searchMovie.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         searchMovie.setBorder(null);
-        searchMovie.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                searchMovieMouseExited(evt);
+        searchMovie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchMovieKeyPressed(evt);
             }
         });
-        jPanel1.add(searchMovie, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 369, 350, -1));
+        jPanel1.add(searchMovie, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 194, 350, -1));
 
         searchBox.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MoviePage/searchBox.png"))); // NOI18N
-        jPanel1.add(searchBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, -1, -1));
+        jPanel1.add(searchBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 185, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("JetBrains Mono", 3, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 560, -1, -1));
+        filmPoster.setMaximumSize(new java.awt.Dimension(190, 270));
+        jPanel1.add(filmPoster, new org.netbeans.lib.awtextra.AbsoluteConstraints(402, 380, 220, 340));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        filmYear.setFont(new java.awt.Font("JetBrains Mono", 3, 20)); // NOI18N
+        filmYear.setForeground(new java.awt.Color(0, 0, 0));
+        filmYear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        filmYear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(filmYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 320, 160, 40));
+
+        filmName.setFont(new java.awt.Font("JetBrains Mono", 3, 24)); // NOI18N
+        filmName.setForeground(new java.awt.Color(0, 0, 0));
+        filmName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        filmName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        filmName.setFocusable(false);
+        filmName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(filmName, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 280, 360, 40));
+
+        filmBox.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MoviePage/fillmBox.png"))); // NOI18N
+        jPanel1.add(filmBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(328, 267, -1, -1));
+
+        nextFilm.setText(">");
+        nextFilm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                nextFilmActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 480, -1, -1));
+        jPanel1.add(nextFilm, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 530, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,24 +225,28 @@ public class MoviePage extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //Fechar Window
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_closeButtonActionPerformed
-
+    
+    //Minimizar Window
     private void minimizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeButtonActionPerformed
         setState(MoviePage.ICONIFIED);
     }//GEN-LAST:event_minimizeButtonActionPerformed
-
+    
+    //Ação do botão `VOLTAR(icone de filme)´
     private void movieIconMiniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movieIconMiniActionPerformed
         save.getSelectPage();
         this.setVisible(false);
     }//GEN-LAST:event_movieIconMiniActionPerformed
 
     private void suggestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suggestionButtonActionPerformed
-        // TODO add your handling code here:
+        //????
     }//GEN-LAST:event_suggestionButtonActionPerformed
-
+    
+    //Ação do botão `PESQUISAR´
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         searchButton.hide();
         suggestionButton.hide();
@@ -190,16 +254,25 @@ public class MoviePage extends javax.swing.JFrame {
         searchBox.show();
         searchMovie.show();
     }//GEN-LAST:event_searchButtonActionPerformed
+    
+    //Ação do botão `> Próximo filme´
+    private void nextFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextFilmActionPerformed
+        if (count + 1 > listaFilmes.size()) {
+            nextFilm.hide();
+        } else {
 
-    private void searchMovieMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMovieMouseExited
-        buscarFilme();
-        
-    }//GEN-LAST:event_searchMovieMouseExited
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        lista++;
-        buscarFilme();
-    }//GEN-LAST:event_jButton1ActionPerformed
+            count++;
+            setFilme();
+        } 
+    }//GEN-LAST:event_nextFilmActionPerformed
+    
+    //Ação da tecla `ENTER´ (para pesquisar filme)
+    private void searchMovieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchMovieKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarFilme();
+            setFilme();
+        }
+    }//GEN-LAST:event_searchMovieKeyPressed
 
     public static void main(String args[]) {
 
@@ -212,11 +285,14 @@ public class MoviePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel filmBox;
+    private javax.swing.JLabel filmName;
+    private javax.swing.JLabel filmPoster;
+    private javax.swing.JLabel filmYear;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton minimizeButton;
     private javax.swing.JButton movieIconMini;
+    private javax.swing.JButton nextFilm;
     private javax.swing.JLabel saveLogoMini;
     private javax.swing.JLabel searchBox;
     private javax.swing.JButton searchButton;
